@@ -1,0 +1,231 @@
+/* Reset and Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* --- REALISTIC LIVE GALAXY BACKGROUND --- */
+@keyframes slow-pan {
+  0% { transform: scale(1.1) translate(0px, 0px); }
+  50% { transform: scale(1.2) translate(-1.5%, 1.5%); }
+  100% { transform: scale(1.1) translate(0px, 0px); }
+}
+
+@keyframes drift {
+  from { background-position: 0 0; }
+  to { background-position: -5000px 2500px; }
+}
+
+.stars, .twinkling {
+  position: fixed; 
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100%; height: 100%;
+  display: block;
+  z-index: -2;
+}
+
+.stars {
+  /* High-resolution realistic deep space photograph */
+  background: #040308 url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2048&auto=format&fit=crop') center center / cover no-repeat;
+  /* Cinematic slow pan and zoom */
+  animation: slow-pan 90s ease-in-out infinite;
+}
+
+.twinkling {
+  /* Dynamic drifting stardust texture */
+  background: transparent url('https://www.transparenttextures.com/patterns/stardust.png') repeat top center;
+  z-index: -1;
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  animation: drift 120s linear infinite;
+} 
+
+/* Glassmorphism Panels */
+.panel {
+  background: rgba(25, 25, 35, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  text-align: center;
+} 
+ 
+/* --- DASHBOARD LAYOUT (CSS GRID) --- */
+.dashboard {
+  display: grid;
+  /* This creates two equal columns side-by-side for your Timer and Spotify */
+  grid-template-columns: 1fr 1fr; 
+  gap: 25px;
+  width: 95%;
+  max-width: 1000px; /* Keeps it from getting too wide on huge monitors */
+  padding: 20px;
+  z-index: 1;
+}
+
+.game-panel {
+  grid-column: 1 / span 2; /* Makes the bottom panel stretch across both columns */
+}
+
+h1, h2 {
+  font-size: 1.5rem;
+  color: #a29bfe;
+  margin-bottom: 15px;
+}
+
+/* --- TIMER STYLES --- */
+#session-type {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #dfe6e9;
+}
+
+#time {
+  font-size: 3.8rem; /* Slightly smaller to fit HH:MM:SS */
+  font-weight: bold;
+  color: #ff7675;
+  margin: 10px 0;
+  text-shadow: 0 0 10px rgba(255, 118, 117, 0.5);
+}
+
+.controls button, #reset-game {
+  background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.controls button:hover, #reset-game:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+}
+
+.settings {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 0.8rem;
+  color: #b2bec3;
+}
+
+.settings input {
+  width: 100%;
+  padding: 5px;
+  margin-top: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.3);
+  color: white;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.highlight {
+  color: #55efc4;
+  font-weight: bold;
+} 
+/* --- CUSTOM TIMER BUTTON --- */
+.apply-btn {
+  width: 100%;
+  margin-top: 15px;
+  background: rgba(162, 155, 254, 0.1); /* Transparent galaxy purple */
+  border: 1px solid rgba(162, 155, 254, 0.4); /* Soft glowing border */
+  color: #a29bfe;
+  padding: 12px;
+  border-radius: 12px; /* Smoother, rounder corners */
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px); /* Frosted glass effect */
+}
+
+.apply-btn:hover {
+  background: rgba(162, 155, 254, 0.3);
+  color: #ffffff;
+  border-color: #a29bfe;
+  box-shadow: 0 0 15px rgba(162, 155, 254, 0.5); /* Outer neon glow */
+  transform: translateY(-2px);
+}
+
+/* --- DRAWING PAD STYLES --- */
+.hidden {
+  display: none !important;
+}
+
+#focus-message {
+  padding: 40px 10px;
+  color: #b2bec3;
+}
+
+#focus-message p {
+  margin-top: 10px;
+  font-size: 1.1rem;
+}
+
+.canvas-container {
+  background: rgba(255, 255, 255, 0.95); /* White background for drawing */
+  border-radius: 12px;
+  margin: 15px auto;
+  overflow: hidden;
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
+  width: fit-content;
+}
+
+#doodle-pad {
+  cursor: crosshair;
+  display: block; 
+}
+
+.drawing-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 15px;
+  color: #dfe6e9;
+  font-size: 0.9rem;
+}
+
+.drawing-controls input[type="color"] {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  height: 35px;
+  width: 35px;
+  padding: 0;
+}
+
+#clear-canvas {
+  background: #ff7675;
+}
+
+#clear-canvas:hover {
+  background: #d63031;
+}

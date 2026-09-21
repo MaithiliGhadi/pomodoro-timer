@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galaxy Pomodoro Dashboard</title>
+  <link rel="stylesheet" href="pomo.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="stars"></div>
+  <div class="twinkling"></div>
+
+  <main class="dashboard">
+    <section class="panel timer-panel">
+      <h1>Focus Timer</h1>
+      <div class="timer">
+        <span id="session-type">Work</span>
+        <div id="time">25:00</div>
+      </div>
+      <div class="controls">
+        <button id="start-stop">Start</button>
+        <button id="reset">Reset</button>
+      </div>
+      <div class="settings">
+        <div class="input-group">
+          <label>Work</label>
+          <input type="number" id="work-duration" value="25" min="1" max="60">
+        </div>
+        <div class="input-group">
+          <label>Short</label>
+          <input type="number" id="short-break" value="5" min="1" max="30">
+        </div>
+        <div class="input-group">
+          <label>Long</label>
+          <input type="number" id="long-break" value="15" min="1" max="60">
+        </div>
+      </div> 
+      <button id="apply-settings" class="apply-btn">Set Custom Timer</button>
+      <div class="statistics">
+        <p>Sessions: <span id="work-sessions" class="highlight">0</span></p>
+      </div>
+    </section>
+
+    <section class="panel spotify-panel">
+      <h2>Study Playlist</h2>
+      <div class="spotify-container">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/38mWQAGEylOPPcWfDpB6FO?utm_source=generator&si=c041d91e063c4d53" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      </div>
+    </section>
+
+    <!-- BOTTOM: Dynamic Mini Game Panel -->
+    <section class="panel game-panel">
+      
+      <!-- This shows during Work and Short Breaks -->
+      <div id="focus-message">
+        <h2>Stay Focused! 🚀</h2>
+        <p>Your doodle space will unlock during your 15-minute Long Break.</p>
+      </div>
+      
+      <!-- This ONLY shows during the Long Break -->
+      <div id="drawing-workspace" class="hidden">
+        <h2>Long Break: Doodle Space 🎨</h2>
+        <div class="canvas-container">
+          <canvas id="doodle-pad" width="600" height="300"></canvas>
+        </div>
+        <div class="drawing-controls">
+          <label for="color-picker">Color:</label>
+          <input type="color" id="color-picker" value="#ff7675">
+          
+          <label for="brush-size">Brush Size:</label>
+          <input type="range" id="brush-size" min="1" max="20" value="5">
+          
+          <button id="clear-canvas">Clear Board</button>
+        </div>
+      </div>
+
+    </section>
+  
+  <script src="pomo.js"></script>
+</body>
+</html>

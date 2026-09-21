@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import './App.css';
+import Background from './components/Background';
 
-// --- LIVELY ANIMATED BACKGROUND THEMES ---
+// --- BACKGROUND THEMES ---
 const themes = {
   "Live Galaxy": "https://i.pinimg.com/originals/09/a3/52/09a3521d09e59ed1e8a8b1399e82c5f1.gif",
   "Lofi Study Girl": "https://i.pinimg.com/originals/a4/f2/cb/a4f2cb80ff2ae2772e80bf30e9d78d4c.gif",
@@ -11,7 +12,7 @@ const themes = {
 
 export default function App() {
   // --- THEME STATE ---
-  const [currentTheme, setCurrentTheme] = useState(themes["Live Galaxy"]);
+  const [currentTheme, setCurrentTheme] = useState('Live Galaxy');
 
   // --- TIMER STATE ---
   const [sessionType, setSessionType] = useState('Work');
@@ -83,13 +84,13 @@ export default function App() {
     else setRemainingTime(longInput * 60 * 1000);
 
     setBtnText("Timer Updated! ✅");
-    setBtnStyle({ 
-      background: "rgba(85, 239, 196, 0.2)", 
-      color: "#55efc4", 
-      borderColor: "#55efc4", 
-      boxShadow: "0 0 15px rgba(85, 239, 196, 0.3)" 
+    setBtnStyle({
+      background: "rgba(85, 239, 196, 0.2)",
+      color: "#55efc4",
+      borderColor: "#55efc4",
+      boxShadow: "0 0 15px rgba(85, 239, 196, 0.3)"
     });
-    
+
     setTimeout(() => {
       setBtnText("Set Custom Timer");
       setBtnStyle({});
@@ -104,7 +105,7 @@ export default function App() {
     return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   };
 
-  // --- CANVAS LOGIC ---
+  // --- DOODLE CANVAS LOGIC ---
   useEffect(() => {
     if (sessionType === 'Long Break' && canvasRef.current) {
       const canvas = canvasRef.current;
@@ -137,7 +138,6 @@ export default function App() {
     ctxRef.current.lineWidth = brushSize;
     ctxRef.current.lineCap = "round";
     ctxRef.current.strokeStyle = brushColor;
-
     ctxRef.current.lineTo(x, y);
     ctxRef.current.stroke();
     ctxRef.current.beginPath();
@@ -151,19 +151,28 @@ export default function App() {
     }
   };
 
+  const isStarkTheme = currentTheme === 'Stark Workshop';
+
   return (
     <>
-      {/* Animated Wallpaper Layer */}
-      <div 
-        className="stars" 
-        style={{ 
-          backgroundImage: `url(${currentTheme})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-        }}
-      ></div>
-      <div className="twinkling"></div>
-      
+      {/* Interactive Canvas Background */}
+      <Background effect="stark" enabled={isStarkTheme} />
+
+      {/* Existing animated wallpaper backgrounds */}
+      {!isStarkTheme && (
+        <>
+          <div
+            className="stars"
+            style={{
+              backgroundImage: `url(${themes[currentTheme]})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
+          />
+          <div className="twinkling" />
+        </>
+      )}
+
       <main className="dashboard">
         <section className="panel timer-panel">
           <h1>Focus Timer</h1>
@@ -191,40 +200,21 @@ export default function App() {
             </div>
           </div>
 
-          {/* THEME SELECTION DROPDOWN */}
           <div className="theme-row">
             <label htmlFor="theme-select">Theme Background</label>
-            <select 
+            <select
               id="theme-select"
-              value={currentTheme} 
+              value={currentTheme}
               onChange={(e) => setCurrentTheme(e.target.value)}
             >
               {Object.keys(themes).map((themeName) => (
-                <option key={themeName} value={themes[themeName]}>
-                  {themeName}
-                </option>
+                <option key={themeName} value={themeName}>{themeName}</option>
               ))}
+              <option value="Stark Workshop">Stark Workshop</option>
             </select>
-          </div> 
+          </div>
 
-
-      {/* THEME SELECTION DROPDOWN */}
-          <div className="theme-row">
-            <label htmlFor="theme-select">Theme Background</label>
-            <select 
-              id="theme-select"
-              value={currentTheme} 
-              onChange={(e) => setCurrentTheme(e.target.value)}
-            >
-              {Object.keys(themes).map((themeName) => (
-                <option key={themeName} value={themes[themeName]}>
-                  {themeName}
-                </option>
-              ))}
-            </select>
-          </div> 
-
-          <button className="apply-btn" style={btnStyle} onClick={applySettings}>{btnText}</button> 
+          <button className="apply-btn" style={btnStyle} onClick={applySettings}>{btnText}</button>
           <div className="statistics">
             <p>Sessions: <span className="highlight">{workSessions}</span></p>
           </div>
@@ -233,16 +223,17 @@ export default function App() {
         <section className="panel spotify-panel">
           <h2>Study Playlist</h2>
           <div className="spotify-container">
-            <iframe 
-              style={{ borderRadius: '12px' }} 
-              src="https://open.spotify.com/embed/playlist/37i9dQZF1DWWQRwui0ExPn?utm_source=generator&theme=0" 
-              width="100%" 
-              height="352" 
-              frameBorder="0" 
-              allowFullScreen="" 
-              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+            <iframe
+              style={{ borderRadius: '12px' }}
+              src="https://open.spotify.com/embed/playlist/37i9dQZF1DWWQRwui0ExPn?utm_source=generator&theme=0"
+              width="100%"
+              height="352"
+              frameBorder="0"
+              allowFullScreen=""
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
               loading="lazy"
-            ></iframe>
+              title="Study Playlist"
+            />
           </div>
         </section>
 
@@ -256,12 +247,12 @@ export default function App() {
             <div id="drawing-workspace">
               <h2>Long Break: Doodle Space 🎨</h2>
               <div className="canvas-container">
-                <canvas 
-                  ref={canvasRef} 
-                  onMouseDown={startDrawing} 
-                  onMouseUp={stopDrawing} 
-                  onMouseMove={draw} 
-                  onMouseOut={stopDrawing} 
+                <canvas
+                  ref={canvasRef}
+                  onMouseDown={startDrawing}
+                  onMouseUp={stopDrawing}
+                  onMouseMove={draw}
+                  onMouseOut={stopDrawing}
                 />
               </div>
               <div className="drawing-controls">
